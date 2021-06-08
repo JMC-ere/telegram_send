@@ -92,7 +92,7 @@ def send_message():
         message_text += alias_message
 
         bot.sendMessage(chat_id='1228894509', text=message_text)
-        bot.sendMessage(chat_id='976803858', text=message_text)
+        # bot.sendMessage(chat_id='976803858', text=message_text)
         # bot.sendMessage(chat_id='1070666335', text=message_text)
         #  안정화 기간 지나면 삭제-------------------end-------------------------
 
@@ -103,7 +103,7 @@ def send_message():
         message = today.strftime("%Y.%m.%d") + " NUDGE 모니터링 모듈 이슈\n"
         message += str(e.__cause__)
         bot.sendMessage(chat_id='1228894509', text=message)
-        bot.sendMessage(chat_id='976803858', text=message)
+        # bot.sendMessage(chat_id='976803858', text=message)
         # bot.sendMessage(chat_id='1070666335', text=message)
 
 
