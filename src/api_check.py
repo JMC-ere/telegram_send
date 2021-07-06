@@ -3,19 +3,21 @@ import urllib.request
 import json
 import telegram
 from datetime import datetime
+from test_mail import mail_send
 
 
 def check_api():
 
     today = datetime.today().strftime("%Y.%m.%d")
-    bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
-    message = f"<{today} API SERVER CHECK>\n\n"
+    # bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
 
+    message = ""
     server_list = ['121.125.71.171:8080', '121.125.71.172:8080', '121.125.71.173:8080',
                    '1.255.46.181:8080', '1.255.46.182:8080', '1.255.46.183:8080', '1.255.46.184:8080']
     f = ''
 
     cnt = 0
+    err_cnt = 0
 
     try:
         for server in server_list:
@@ -37,22 +39,25 @@ def check_api():
             f = json.loads(f)
 
             if f['result'] == '0000':
-                message += f"[{server}] = [정상]\n"
+                message += f"[{server}] = [정상]<br>"
                 cnt += 1
             else:
-                message += f"SERVER : [{server}]\n 상태 : [{f}]"
+                message += f"SERVER : [{server}]  상태 : [{f}]"
+                err_cnt += 1
 
         if cnt == 7:
             message += f"\n<7개 서버 응답 정상>"
+            h_message = f"<{today} API CHECK> : [이슈 : 0]"
         else:
-            print("123")
+            h_message = f"<{today} API CHECK> : [이슈 : {err_cnt}]"
 
     except Exception as err:
+        h_message = f"<{today} API CHECK> : [이슈 : {err_cnt}]"
         message += str(err)
 
+    mail_send(h_message, message)
 
-
-    bot.sendMessage(chat_id='1228894509', text=message)
+    # bot.sendMessage(chat_id='1228894509', text=message)
     # bot.sendMessage(chat_id='976803858', text=message)
     # bot.sendMessage(chat_id='1070666335', text=message)
 

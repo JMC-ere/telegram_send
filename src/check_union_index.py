@@ -2,17 +2,17 @@
 from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
 import time
-import telegram
+from test_mail import mail_send
 
 today = datetime.today()
 this_day = today.strftime("%Y.%m.%d")
 one_days_before = (today - timedelta(1)).strftime("%Y-%m-%d")
 tow_days_before = (today - timedelta(2)).strftime("%Y.%m.%d")
-# bot = telegram.Bot(token="1136684466:AAGbpu5NjIhrVKr3tK6VKelS1AOSF2PgW5A")
-bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
 
 
 def check_index():
+
+    err_cnt = 0
 
     try:
         # ES Connect
@@ -55,27 +55,29 @@ def check_index():
         response = es_client.search(index=index_name, body=query % (one_days_before, one_days_before))
         list_day = response['aggregations']['NAME']['buckets']
 
-        message = "<넛지 성과 분석>(" + one_days_before + ")\n"
+        message = ""
 
         if not list_day:
             message += "ALIAS ERROR"
 
         for day in list_day:
-            message += str(day['key']) + " : " + str(day['doc_count']) + "건\n"
+            if day['doc_count'] != 0:
+                message += f"{str(day['key'])} : {str(day['doc_count'])} 건"
+            else:
+                err_cnt += 1
 
-        print(message)
-        bot.sendMessage(chat_id='1228894509', text=str(message))
-        # bot.sendMessage(chat_id='976803858', text=str(message))
-        # bot.sendMessage(chat_id='1070666335', text=str(message))
+        h_message = f"넛지 성과 분석 ({one_days_before}) 이슈 : {err_cnt}건"
+
+        mail_send(h_message, message)
+        print(h_message + message)
         time.sleep(10)
-        bot.close()
 
     except Exception as es_err:
-
         print(es_err)
+        h_message = f"넛지 성과 분석 ({one_days_before}) 이슈 : {err_cnt}건"
         err_message = "넛지 성과 분석 ERROR : "
         err_message += str(es_err)
-        bot.sendMessage(chat_id='1228894509', text=err_message)
+        # bot.sendMessage(chat_id='1228894509', text=err_message)
 
 
 if __name__ == '__main__':
