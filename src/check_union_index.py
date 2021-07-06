@@ -2,7 +2,7 @@
 from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
 import time
-from test_mail import mail_send
+from send_mail import mail_send
 
 today = datetime.today()
 this_day = today.strftime("%Y.%m.%d")

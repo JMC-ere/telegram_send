@@ -3,7 +3,7 @@ import urllib.request
 import json
 import telegram
 from datetime import datetime
-from test_mail import mail_send
+from send_mail import mail_send
 
 
 def check_api():

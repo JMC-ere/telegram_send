@@ -2,7 +2,7 @@
 from datetime import datetime, timedelta
 from elasticsearch import Elasticsearch
 import telegram
-from test_mail import mail_send
+from send_mail import mail_send
 
 today = datetime.today()
 yesterday = today - timedelta(days=1)
