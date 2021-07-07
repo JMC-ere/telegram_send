@@ -1,7 +1,0 @@
-[2021-06-07 15:13:40,545][nudge_9_send.py:103] >> Chat not found
-[2021-06-07 15:20:04,993][complete_err_send.py:51] >> NotFoundError(404, 'aliases_not_found_exception', 'aliases [index-nudge-complete-all] missing', index-nudge-complete-all, aliases)
-[2021-06-07 15:20:04,993][complete_err_send.py:135] >> telegram_send message success
-[2021-06-07 15:20:43,870][complete_err_send.py:51] >> NotFoundError(404, 'aliases_not_found_exception', 'aliases [index-nudge-complete-all] missing', index-nudge-complete-all, aliases)
-[2021-06-07 15:20:43,871][complete_err_send.py:135] >> telegram_send message success
-[2021-06-07 16:43:14,733][nudge_9_send.py:107] >> Chat not found
-[2021-06-07 16:44:36,551][nudge_9_send.py:101] >> telegram_send message success

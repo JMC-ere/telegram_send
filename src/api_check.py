@@ -55,9 +55,4 @@ def check_api():
 
     mail_send(h_message, message)
 
-    # bot.sendMessage(chat_id='1228894509', text=message)
-    # bot.sendMessage(chat_id='976803858', text=message)
-    # bot.sendMessage(chat_id='1070666335', text=message)
-
-
 check_api()
