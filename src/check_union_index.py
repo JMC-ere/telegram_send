@@ -1,7 +1,6 @@
 # -*-coding:utf-8-*-
 from elasticsearch import Elasticsearch
 from datetime import datetime, timedelta
-import time
 from send_mail import mail_send
 
 today = datetime.today()

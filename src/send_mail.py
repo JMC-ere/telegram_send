@@ -1,6 +1,4 @@
-import os
-from datetime import datetime
-from datetime import timedelta
+# -*-coding:utf-8-*-
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 import smtplib
