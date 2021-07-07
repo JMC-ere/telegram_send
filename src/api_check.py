@@ -1,7 +1,6 @@
 # -*-coding:utf-8-*-
 import urllib.request
 import json
-import telegram
 from datetime import datetime
 from send_mail import mail_send
 
@@ -9,7 +8,6 @@ from send_mail import mail_send
 def check_api():
 
     today = datetime.today().strftime("%Y.%m.%d")
-    # bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
 
     message = ""
     server_list = ['121.125.71.171:8080', '121.125.71.172:8080', '121.125.71.173:8080',

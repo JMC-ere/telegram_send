@@ -12,13 +12,14 @@ def mail_send(title, content):
     email_password = '3softplus1234'
 
     # 받는사람
-    recipients = ['wjdals9058@3softplus.com', 'object@3softplus.com']
+    recipients = ['wjdals9058@3softplus.com']
 
     # 참조
     # cc = ['']
     msg = MIMEMultipart()
     msg['From'] = email_user
     msg['To'] = ", ".join(recipients)
+    msg['Bcc'] = "3softplus_bot@3softplus.com"
     # msg['Cc'] = ", ".join(cc)
     msg['Subject'] = title
 

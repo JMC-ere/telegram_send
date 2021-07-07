@@ -62,7 +62,7 @@ def check_index():
 
         for day in list_day:
             if day['doc_count'] != 0:
-                message += f"{str(day['key'])} : {str(day['doc_count'])} 건"
+                message += f"{str(day['key'])} : {str(day['doc_count'])} 건<br>"
             else:
                 err_cnt += 1
 
@@ -70,7 +70,6 @@ def check_index():
 
         mail_send(h_message, message)
         print(h_message + message)
-        time.sleep(10)
 
     except Exception as es_err:
         print(es_err)

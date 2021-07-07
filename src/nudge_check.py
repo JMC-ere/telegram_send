@@ -1,7 +1,7 @@
 # -*-coding:utf-8-*-
 from datetime import datetime, timedelta
 from elasticsearch import Elasticsearch
-import telegram
+from send_mail import mail_send
 
 today = datetime.today()
 yesterday = today - timedelta(days=1)
@@ -10,10 +10,9 @@ yesterday = today - timedelta(days=1)
 def send_message():
 
     index_es = ''
-    bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
+    err_cnt = 0
 
     try:
-        bot = telegram.Bot(token="1049808110:AAGUYRvxgZLYNcmQFn3p8yO9VSqzQyPavls")
 
         index_es = Elasticsearch(
             ["121.125.71.151", "121.125.71.152", "121.125.71.153", "121.125.71.154", "121.125.71.155"],
@@ -61,7 +60,7 @@ def send_message():
         test_list = []
         t_cnt = 0
 
-        message_text = datetime.today().strftime("%Y-%m-%d") + " NUDGE 모니터링 결과 \n\n"
+        message_text = ''
 
         check_alias = index_es.indices.exists_alias(name="index-nudge-complete-all")
 
@@ -70,20 +69,21 @@ def send_message():
             check_alias_name = index_es.indices.get_alias(name="index-nudge-complete-all")
             key = check_alias_name.keys()
             alias_message = "\nAlias Name : " + list(key)[0]
-            bot.sendMessage(chat_id='1228894509', text=alias_message)
         else:
             alias_message = "\n" + "Alias Name : Alias Error"
         # 알리아스 체크------------end
 
         if len(arr_type) > 0:
             for type1 in arr_type:
-                message_text += type1 + " : " + "empty [*확인필요*]\n"
+                message_text += type1 + " : " + "empty [*확인필요*]<br>"
+                err_cnt += 1
 
         for es_row in result_es:
             test_list.append(es_row['doc_count'])
 
             if test_list[t_cnt] != 0:
-                message_text += es_row['key'] + " : " + str(format(test_list[t_cnt], ',')) + "건\n"
+                if es_row['key'] != "":
+                    message_text += es_row['key'] + " : " + str(format(test_list[t_cnt], ',')) + "건<br>"
 
             t_cnt = t_cnt + 1
 
@@ -91,20 +91,21 @@ def send_message():
 
         message_text += alias_message
 
-        bot.sendMessage(chat_id='1228894509', text=message_text)
-        bot.sendMessage(chat_id='976803858', text=message_text)
-        # bot.sendMessage(chat_id='1070666335', text=message_text)
+        h_message_text = datetime.today().strftime("%Y-%m-%d") + f" NUDGE 모니터링 결과 이슈 : {err_cnt}건"
+
+        mail_send(h_message_text, message_text)
+
         #  안정화 기간 지나면 삭제-------------------end-------------------------
 
         index_es.close()
 
     except Exception as e:
         index_es.close()
-        message = today.strftime("%Y.%m.%d") + " NUDGE 모니터링 모듈 이슈\n"
+        h_message_text = datetime.today().strftime("%Y-%m-%d") + f" NUDGE 모니터링 결과 이슈 : {err_cnt}건"
+        message = today.strftime("%Y.%m.%d") + " NUDGE 모니터링 모듈 이슈<br>"
         message += str(e.__cause__)
-        bot.sendMessage(chat_id='1228894509', text=message)
-        bot.sendMessage(chat_id='976803858', text=message)
-        # bot.sendMessage(chat_id='1070666335', text=message)
+
+        mail_send(h_message_text, message)
 
 
 if __name__ == '__main__':
