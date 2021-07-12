@@ -10,7 +10,7 @@ def mail_send(title, content):
     email_password = '3softplus1234'
 
     # 받는사람
-    recipients = ['wjdals9058@3softplus.com', ]
+    recipients = ['wjdals9058@3softplus.com', 'object@3softplus.com']
 
     # 참조
     # cc = ['']

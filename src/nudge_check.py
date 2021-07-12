@@ -39,7 +39,7 @@ def send_message():
 
     message_text = '<table style="border-collapse: collapse" border="1px">'
 
-    message_text += f"<tr><th>구분</th><th>{today.strftime('%Y.%m.%d')}</th><th>{yesterday}</th></tr>"
+    message_text += f"<tr><th>구분</th><th>{today.strftime('%Y.%m.%d')}</th><th>{yesterday}</th><th>증가/감소</th></tr>"
 
     #  Alias Check start
     check_alias = es_client.indices.exists_alias(name=index_name)
@@ -72,17 +72,24 @@ def send_message():
 
     for key_type in arr_type:
         if key_type in dict_result:
-            message_text += f"<tr><td>{key_type}</td><td>{str(format(dict_result[key_type], ','))} 건</td>"
-            print(dict_result)
+            message_text += f"<tr><td>{key_type}</td><td>{str(format(dict_result[key_type], ','))}건</td>"
         else:
-            print(dict_result)
             message_text += f"<tr><td>{key_type}</td><td> Empty [*확인필요*]</td>"
             err_count += 1
+            dict_result[key_type] = 0
 
         if key_type in yesterday_dict_result:
-            message_text += f"<td>{str(format(yesterday_dict_result[key_type], ','))} 건</td></tr>"
+            message_text += f"<td>{str(format(yesterday_dict_result[key_type], ','))}건</td>"
         else:
-            message_text += f"<td>0 건</td></tr>"
+            message_text += f"<td>0건</td>"
+            yesterday_dict_result[key_type] = 0
+
+        # 감소
+        if dict_result[key_type] < yesterday_dict_result[key_type]:
+            message_text += f'<td><font color="red">{str(format(yesterday_dict_result[key_type] - dict_result[key_type], ","))} 감소</font></td></tr>'
+        # 증가
+        else:
+            message_text += f'<td><font color="blue">{str(format(dict_result[key_type] - yesterday_dict_result[key_type], ","))} 증가</font></td></tr>'
 
     message_text += f"</table><br>"
 
