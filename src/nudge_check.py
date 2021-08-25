@@ -86,10 +86,10 @@ def send_message():
 
         # 감소
         if dict_result[key_type] < yesterday_dict_result[key_type]:
-            message_text += f'<td><font color="red">{str(format(yesterday_dict_result[key_type] - dict_result[key_type], ","))} 감소</font></td></tr>'
+            message_text += f'<td><font color="blue">{str(format(yesterday_dict_result[key_type] - dict_result[key_type], ","))} 감소</font></td></tr>'
         # 증가
         else:
-            message_text += f'<td><font color="blue">{str(format(dict_result[key_type] - yesterday_dict_result[key_type], ","))} 증가</font></td></tr>'
+            message_text += f'<td><font color="red">{str(format(dict_result[key_type] - yesterday_dict_result[key_type], ","))} 증가</font></td></tr>'
 
     message_text += f"</table><br>"
 

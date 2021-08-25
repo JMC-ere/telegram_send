@@ -17,7 +17,10 @@ def check_index():
         # ES Connect
         es_client = Elasticsearch(['121.125.71.147',
                                    '121.125.71.148',
-                                   '121.125.71.149'],
+                                   '121.125.71.149',
+                                   '121.125.71.157',
+                                   '121.125.71.158',
+                                   '121.125.71.159'],
                                   port=9200, timeout=20,
                                   http_auth=('elastic', 'wtlcnNyrDPVko01lZfIl'))
         es_client.info()
@@ -75,7 +78,6 @@ def check_index():
         h_message = f"넛지 성과 분석 ({one_days_before}) 이슈 : {err_cnt}건"
         err_message = "넛지 성과 분석 ERROR : "
         err_message += str(es_err)
-        # bot.sendMessage(chat_id='1228894509', text=err_message)
 
 
 if __name__ == '__main__':
